@@ -36,3 +36,48 @@
     transform: rotate(360deg);
   }
 }
+
+* {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+  padding: 100px;
+}
+
+.square {
+  width: 100px;
+  height: 100px;
+  background-color: #282c34;
+  border-radius: 0;
+  border: aliceblue solid 2px;
+  font-size: 50px;
+  font-weight: bold;
+  color: aliceblue;
+}
+
+.square:hover {
+  cursor: pointer;
+  background-color: #444a57;
+}
+
+.board-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+}
+
+.moveButton {
+  color: aliceblue;
+  background-color: #282c34;
+  border: black 2px solid;
+  border-radius: 10px;
+}
+
+.listItem {
+  padding: 5px;
+}
