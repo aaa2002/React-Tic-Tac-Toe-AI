@@ -16,7 +16,7 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a]; // Return the winner symbol
+            return squares[a]; // Winner
         }
     }
 
@@ -110,7 +110,7 @@ function Game() {
     function handlePlay(nextSquares) {
         let winner = calculateWinner(nextSquares);
 
-        // Check for a draw before setting the game status
+        // Check for "draw" state before setting game status
         if (!winner && isDraw(nextSquares)) {
             winner = 'draw';
         }
@@ -126,7 +126,6 @@ function Game() {
             setCurrentMove(nextHistory.length - 1);
         }
 
-        // Update isComputerTurn after the move is made and game status is checked
         setIsComputerTurn(!isComputerTurn);
     }
 
@@ -162,16 +161,16 @@ function Game() {
     function calculateBestMove(squares, depth, isMaximizing) {
         const player = isMaximizing ? 'O' : 'X';
 
-        // Check if the game is over or it's a draw
+        // Check win, loss or draw
         const winner = calculateWinner(squares);
         if (winner === 'X') {
-            return -1; // The computer loses (-1 score)
+            return -1; // AI loses [score -1]
         }
         if (winner === 'O') {
-            return 1; // The computer wins (1 score)
+            return 1; // AI wins [score 1]
         }
         if (isDraw(squares)) {
-            return 0; // It's a draw (0 score)
+            return 0; // Draw [score 0]
         }
 
         let bestScore = isMaximizing ? -Infinity : Infinity;
@@ -188,10 +187,10 @@ function Game() {
                     bestScore = Math.min(score, bestScore);
                 }
 
-                squares[i] = null; // Undo the move
+                squares[i] = null;
 
                 if (isMaximizing && bestScore === 1) {
-                    break; // ALPHA BETA PRUNING -ish
+                    break; // Pruning
                 }
             }
         }
@@ -207,7 +206,7 @@ function Game() {
             if (!squares[i]) {
                 squares[i] = 'O';
                 const score = calculateBestMove(squares, depth, false);
-                squares[i] = null; // Undo the move
+                squares[i] = null;
 
                 if (score > bestScore) {
                     bestScore = score;
@@ -229,7 +228,7 @@ function Game() {
                 if (emptySquares.length > 0) {
                     let nextMove;
 
-                    // Check if computer can win
+                    // Check if AI can win
                     nextMove = findWinningMove(currentSquares, 'O');
                     if (nextMove !== null) {
                         const nextSquares = currentSquares.slice();
@@ -238,7 +237,7 @@ function Game() {
                         return;
                     }
 
-                    // Check if player can win, and block the player
+                    // Check if player can win. If so, block player
                     nextMove = findWinningMove(currentSquares, 'X');
                     if (nextMove !== null) {
                         const nextSquares = currentSquares.slice();
@@ -247,8 +246,8 @@ function Game() {
                         return;
                     }
 
-                    // Find the best move using minimax
-                    nextMove = findBestMove(currentSquares, 9); // 9 for maximum depth
+                    // Best move - minimax algorithm
+                    nextMove = findBestMove(currentSquares, 9); // 9 is max depth for a fixed starting position
                     if (nextMove !== -1) {
                         const nextSquares = currentSquares.slice();
                         nextSquares[nextMove] = 'X';
@@ -259,9 +258,7 @@ function Game() {
 
                 setIsComputerTurn(false);
 
-                // Delay declaring the result
                 setTimeout(() => {
-                    // Check for a draw or winner here and update gameStatus accordingly
                 }, 1000);
             }, 1000);
 
